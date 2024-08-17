@@ -31,7 +31,7 @@ Then(/^URL should match (.*)$/ , async function (expectedURL) {
 // web interactions
 
 Given(/^A web page is opened$/ , async function (){
-    await browser.url("/checkboxes");
+    await browser.url("/windows");
     await browser.setTimeout({implicit: 15000 , pageLoad: 10000});
     await browser.maximizeWindow();
 })
@@ -90,22 +90,60 @@ When(/^Perform web interactions$/ , async function() {
      * 
      */
 
-    let checkBoxes = await $$(`//form[@id="checkboxes"]/input`);
-    chai.expect(await checkBoxes[1].isSelected()).to.be.true;  //asserting an option
-    await checkBoxes[0].click(); //selecting the 1st option
-    await checkBoxes[1].click(); //unselecting the 2nd option
-    chai.expect(await checkBoxes[0].isSelected()).to.be.true; // asserting an option
+    // let checkBoxes = await $$(`//form[@id="checkboxes"]/input`);
+    // chai.expect(await checkBoxes[1].isSelected()).to.be.true;  //asserting an option
+    // await checkBoxes[0].click(); //selecting the 1st option
+    // await checkBoxes[1].click(); //unselecting the 2nd option
+    // chai.expect(await checkBoxes[0].isSelected()).to.be.true; // asserting an option
 
-    //asserting all the checkboxes
-    for (let i = 0 ; i < checkBoxes.length ; i++){
-        console.log(await checkBoxes[i].getAttribute('value'));
-        if(!await checkBoxes[i].isSelected()){
-            await checkBoxes[i].click()
-        }
-    }
-    checkBoxes.forEach(async ele =>{
-        chai.expect(await ele.isSelected()).to.be.true
-    })
+    // //asserting all the checkboxes
+    // for (let i = 0 ; i < checkBoxes.length ; i++){
+    //     console.log(await checkBoxes[i].getAttribute('value'));
+    //     if(!await checkBoxes[i].isSelected()){
+    //         await checkBoxes[i].click()
+    //     }
+    // }
+    // checkBoxes.forEach(async ele =>{
+    //     chai.expect(await ele.isSelected()).to.be.true
+    // })
+
+    /**
+     * 4. Window handling
+     * Steps:
+     * 1. Launch the browser
+     * 2. Open another windows
+     * 3. Switch to the window based on title
+     * 4. Switch back to the main window
+     * 
+     * Methods Used
+     * 1. getTitle()
+     * 2. getWindowHandle()
+     * 3. getWindowHandles()
+     * 4. switchToWindow()
+     */
+
+    //open new windows
+    // await $(`=Click Here`).click()
+    // await $(`=Elemental Selenium`).click()
+    // let currentWinTittle = await browser.getTitle();
+    // console.log(`>> currentWinTitle: ${currentWinTittle}`)
+
+    // //Switch to specific window
+    // let winHandles = await browser.getWindowHandles()
+    // for(let i = 0 ; i < winHandles.length ; i++){
+    //     console.log(`Window handle : ${winHandles[i]}`);
+    //     await browser.switchToWindow(winHandles[i])
+    //     currentWinTittle = await browser.getTitle();
+
+    //     if(currentWinTittle === "Home | Elemental Selenium"){
+    //         await browser.switchToWindow(winHandles[i])
+    //         let headerTxtEleSel = (await $(`<h1>`)).getText();
+    //         console.log(`>> headerTxtEleSel : ${headerTxtEleSel}`)
+    //         break
+    //     }
+    // }
+
+     
 
     await browser.pause(3000) 
 
