@@ -31,7 +31,7 @@ Then(/^URL should match (.*)$/ , async function (expectedURL) {
 // web interactions
 
 Given(/^A web page is opened$/ , async function (){
-    await browser.url("/windows");
+    await browser.url("/frames");
     await browser.setTimeout({implicit: 15000 , pageLoad: 10000});
     await browser.maximizeWindow();
 })
@@ -142,6 +142,42 @@ When(/^Perform web interactions$/ , async function() {
     //         break
     //     }
     // }
+
+    /**
+     * 5. Handling alerts
+     * Methods used
+     * 1. isAlertOpen() -> boolean to check if alert prompt is opened is not
+     * 2. acceptAlert()
+     * 3. dismissAlert()
+     * 4. getAlertText()
+     * 5. sendAlert()
+     * 
+     */
+
+    // await $(`button=Click for JS Alert`).click()
+    // if(await browser.isAlertOpen()){
+    //     await browser.acceptAlert();
+    // }
+
+
+    /**
+     * 5. File upload
+     * 
+     */
+
+    // await $("#file-upload").addValue(`${process.cwd()}/data/dymmy.txt`);
+    // await $("#file-submit").click()
+
+
+    /**
+     * 6. Frames
+     * Methods used:
+     * 1. switchToFrame
+     * 2. switchToParentFrame
+     */
+
+    (await $(`=iFrame`)).click()
+    
 
      
 
