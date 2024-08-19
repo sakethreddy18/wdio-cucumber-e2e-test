@@ -1,5 +1,6 @@
 import { Given, When , Then } from "@wdio/cucumber-framework";
 import * as chai from "chai";
+import fs from 'fs';
 
 Given(/^Google page is opened$/ , async function (){
     console.log('Before opening browser ...')
@@ -31,7 +32,7 @@ Then(/^URL should match (.*)$/ , async function (expectedURL) {
 // web interactions
 
 Given(/^A web page is opened$/ , async function (){
-    await browser.url("/frames");
+    await browser.url("/tables");
     await browser.setTimeout({implicit: 15000 , pageLoad: 10000});
     await browser.maximizeWindow();
 })
@@ -176,10 +177,70 @@ When(/^Perform web interactions$/ , async function() {
      * 2. switchToParentFrame
      */
 
-    (await $(`=iFrame`)).click()
-    
+    // (await $(`=iFrame`)).click()
 
-     
+    /**
+     * 7. Tables
+     * Topics
+     * 1. Check the number of rows and columns
+     * 2. Get whole table data
+     * 3. Get single row based on condition
+     * 4. Get single column
+     * 5. Get single cell value [based on another cell]
+     */
+    
+    //Row and column count
+    let rowCount = await $$(`//table[@id="table1"]/tbody/tr`).length;
+    console.log(`>> Number of rows : ${rowCount}`);
+    chai.expect(rowCount).to.equal(4)
+
+
+    let colCount = await $$(`//table[@id="table1"]/thead/tr/th`).length;
+    console.log(`>> Number of columns : ${colCount}`  );
+    chai.expect(colCount).to.equal(6)
+    
+    //Get the whole table data
+    let tableDataArr = [];
+     for(let i = 1 ; i <= rowCount ; i++){
+        let personObj = {
+            lastname : "",
+            firstname : "",
+            email: "",
+            due:"",
+            web:"",
+            
+        }
+        
+        for( let j = 1 ; j < colCount ; j++){
+            let ele =  await $(`//*[@id="table1"]/tbody/tr[${i}]/td[${j}]`).getText()
+            switch (j){
+                case 1:
+                    personObj.lastname = ele;
+                    break;
+                
+                case 2:
+                    personObj.firstname = ele;
+                    break;
+                
+                case 3:
+                    personObj.email = ele;
+                    break;
+                
+                case 4:
+                    personObj.due = ele;
+                    break;
+                
+                case 5:
+                    personObj.web = ele;
+                    break
+                
+    
+            }
+        }
+        tableDataArr.push(personObj);
+     }
+     const jsonData = JSON.stringify(tableDataArr, null, 2);
+     fs.writeFileSync(`${process.cwd()}/debug/temp.json` , jsonData , 'utf-8')
 
     await browser.pause(3000) 
 
