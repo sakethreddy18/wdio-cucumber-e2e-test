@@ -23,7 +23,10 @@ Then(/^Click on the first search result$/, async function () {
 
 Then(/^URL should match (.*)$/, async function (expectedURL) {
   console.log(`>> expected URL : ${expectedURL}`);
-  let url = await browser.getUrl();
+  await browser.waitUntil(async function(){
+    return await browser.getTitle() === "WebdriverIO · Next-gen browser and mobile automation test framework for Node.js | WebdriverIO"
+  }, {timeout: 2000 , interval : 500 , timeoutMsg:`Failed Loading ${await browser.getTitle()}`})
+  let url = await browser.getUrl(); 
   chai.expect(url).to.equal(expectedURL);
 });
 
@@ -295,24 +298,28 @@ When(/^Perform web interactions$/, async function () {
 
   // 5. Get single cell value based on other cell value
 
-  let res = [];
-  for (let i = 0; i < rowCount; i++) {
-    for (let j = 0; j < colCount; j++) {
-      let ele = await $(
-        `//*[@id="table1"]/tbody/tr[${i + 1}]/td[${j + 1}]`
-      ).getText();
-      if (j + 1 === 4) {
-        let price = +ele.replace("$", "");
-        if (price > 50) {
-          let finalCellVal = await $(
-            `//*[@id="table1"]/tbody/tr[${i + 1}]/td[2]`
-          ).getText();
-          res.push(finalCellVal);
-        }
-      }
-    }
-  }
-  console.log(`>> Result : ${res}`);
+  // let res = [];
+  // for (let i = 0; i < rowCount; i++) {
+  //   for (let j = 0; j < colCount; j++) {
+  //     let ele = await $(
+  //       `//*[@id="table1"]/tbody/tr[${i + 1}]/td[${j + 1}]`
+  //     ).getText();
+  //     if (j + 1 === 4) {
+  //       let price = +ele.replace("$", "");
+  //       if (price > 50) {
+  //         let finalCellVal = await $(
+  //           `//*[@id="table1"]/tbody/tr[${i + 1}]/td[2]`
+  //         ).getText();
+  //         res.push(finalCellVal);
+  //       }
+  //     }
+  //   }
+  // }
+  // console.log(`>> Result : ${res}`);
+
+  /**
+   * 6. Scrolling
+   */
 
   await browser.pause(3000);
 });
